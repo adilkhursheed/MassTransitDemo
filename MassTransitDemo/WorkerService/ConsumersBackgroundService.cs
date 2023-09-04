@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace MassTransitDemo.WorkerService
 {
-    internal class BackgroundWorkerService : BackgroundService
+    internal class ConsumersBackgroundService : BackgroundService
     {
         IBus bus;
-        public BackgroundWorkerService(IBus bus)
+        public ConsumersBackgroundService(IBus bus)
         {
             this.bus = bus;
         }

@@ -28,31 +28,32 @@ namespace MassTransit
                         var entryAssembly = Assembly.GetEntryAssembly();
                         //x.AddConsumer<Step1Consumer>();
                         x.AddConsumers(entryAssembly);
-
+                        //x.AddRequestClient<StatusCheckEvent>();//(timeout: TimeSpan.FromSeconds(60));
                         x.AddSagaStateMachines(entryAssembly);
                         x.AddSagas(entryAssembly);
                         x.AddActivities(entryAssembly);
 
-                        ////If any messaging Queue is not available then InMemory can also be used
-                        //x.UsingInMemory((context, cfg) =>
-                        //{
-                        //    cfg.ConfigureEndpoints(context);
-                        //});
-
-                        // Uncomment below if you have ActiveMQ up and running
-                        x.UsingRabbitMq((context, cfg) =>
+                        //If any messaging Queue is not available then InMemory can also be used
+                        x.UsingInMemory((context, cfg) =>
                         {
-                            cfg.Host("localhost", "/", h =>
-                            {
-                                h.Username("guest");
-                                h.Password("guest");
-                            });
-
                             cfg.ConfigureEndpoints(context);
                         });
+
+                        //// Uncomment below if you have ActiveMQ up and running
+                        //x.UsingRabbitMq((context, cfg) =>
+                        //{
+                        //    cfg.Host("localhost", "/", h =>
+                        //    {
+                        //        h.Username("guest");
+                        //        h.Password("guest");
+                        //    });
+
+                        //    cfg.ConfigureEndpoints(context);
+                        //});
                     });
 
-                    services.AddHostedService<BackgroundWorkerService>();
+                    //services.AddHostedService<ConsumersBackgroundService>();
+                    services.AddHostedService<StateMachineBackgroundService>();
                 });
     }
 }
